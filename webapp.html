@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color:rgba(233, 150, 122, 0.905);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: rgb(183, 63, 63);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px  #cddbf0;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.task-input {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.task-input input {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.task-input button {
+    padding: 10px;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #edf1f6;
+    padding: 10px;
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 3px;
+}
+
+button {
+    margin-left: 10px;
+    cursor: pointer;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do App</h1>
+        <div class="task-input">
+            <input type="text" id="new-task" placeholder="Add a new task">
+            <button id="add-task-btn">Add Task</button>
+        </div>
+        <h2>Pending Tasks</h2>
+        <ul id="pending-tasks"></ul>
+        <h2>Completed Tasks</h2>
+        <ul id="completed-tasks"></ul>
+    </div>
+    <script>document.addEventListener('DOMContentLoaded', function() {
+        const newTaskInput = document.getElementById('new-task');
+        const addTaskBtn = document.getElementById('add-task-btn');
+        const pendingTasksList = document.getElementById('pending-tasks');
+        const completedTasksList = document.getElementById('completed-tasks');
+    
+        addTaskBtn.addEventListener('click', function() {
+            const taskText = newTaskInput.value.trim();
+            if (taskText) {
+                addTask(taskText);
+                newTaskInput.value = '';
+            }
+        });
+    
+        function addTask(taskText) {
+            const taskItem = createTaskItem(taskText);
+            pendingTasksList.appendChild(taskItem);
+        }
+    
+        function createTaskItem(taskText) {
+            const li = document.createElement('li');
+            li.textContent = taskText;
+    
+            const completeBtn = document.createElement('button');
+            completeBtn.textContent = 'Complete';
+            completeBtn.addEventListener('click', function() {
+                markTaskComplete(li);
+            });
+    
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'Edit';
+            editBtn.addEventListener('click', function() {
+                editTask(li);
+            });
+    
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', function() {
+                deleteTask(li);
+            });
+    
+            li.appendChild(completeBtn);
+            li.appendChild(editBtn);
+            li.appendChild(deleteBtn);
+            
+            return li;
+        }
+    
+        function markTaskComplete(taskItem) {
+            taskItem.querySelector('button:first-child').remove();
+            completedTasksList.appendChild(taskItem);
+        }
+    
+        function editTask(taskItem) {
+            const taskText = prompt('Edit your task', taskItem.firstChild.textContent);
+            if (taskText) {
+                taskItem.firstChild.textContent = taskText;
+            }
+        }
+    
+        function deleteTask(taskItem) {
+            taskItem.remove();
+        }
+    });
+    </script>
+</body>
+</html>
